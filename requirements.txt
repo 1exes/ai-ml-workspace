@@ -1,0 +1,42 @@
+# === Basics ===
+numpy
+pandas
+matplotlib
+seaborn
+jupyter
+jupyterlab
+
+# === Classical ML ===
+scikit-learn
+
+# === Deep Learning ===
+torch
+torchvision
+torchaudio
+
+# === NLP & Transformers ===
+transformers
+tokenizers
+datasets
+accelerate
+sentencepiece
+
+# === Fine-Tuning ===
+peft
+trl
+bitsandbytes
+
+# === RAG & Embeddings ===
+sentence-transformers
+chromadb
+langchain
+langchain-community
+
+# === Agents ===
+openai
+httpx
+
+# === Utils ===
+tqdm
+rich
+python-dotenv

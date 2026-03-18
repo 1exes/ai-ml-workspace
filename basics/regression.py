@@ -1,8 +1,9 @@
+import sys; sys.stdout.reconfigure(encoding='utf-8')
 """
 01 - Regression: Zahlen vorhersagen
 ====================================
 Regression = ein Modell lernt, eine Zahl vorherzusagen.
-Beispiel: Hauspreis basierend auf Größe, Zimmer, Lage.
+Beispiel: Hauspreis basierend auf Groesse, Zimmer, Lage.
 """
 
 import numpy as np
@@ -44,7 +45,7 @@ for name, model in models.items():
 
     print(f"\n{name}:")
     print(f"  RMSE: {np.sqrt(mse):.2f} (niedriger = besser)")
-    print(f"  R²:   {r2:.4f} (1.0 = perfekt)")
+    print(f"  R2:   {r2:.4f} (1.0 = perfekt)")
 
 # ============================================================
 # 3. Visualisierung
@@ -55,13 +56,12 @@ for ax, (name, model) in zip(axes, models.items()):
     y_pred = model.predict(X_test)
     ax.scatter(y_test, y_pred, alpha=0.5, s=20)
     ax.plot([y_test.min(), y_test.max()], [y_test.min(), y_test.max()], "r--")
-    ax.set_title(f"{name}\nR² = {results[name]['r2']:.3f}")
-    ax.set_xlabel("Tatsächlicher Wert")
+    ax.set_title(f"{name}\nR2 = {results[name]['r2']:.3f}")
+    ax.set_xlabel("Tatsaechlicher Wert")
     ax.set_ylabel("Vorhersage")
 
 plt.tight_layout()
 plt.savefig("regression_vergleich.png", dpi=150)
-plt.show()
 
 # ============================================================
 # 4. Feature Importance - was ist dem Modell wichtig?
@@ -70,7 +70,26 @@ plt.show()
 rf = models["Random Forest"]
 importances = rf.feature_importances_
 for i, imp in enumerate(importances):
-    bar = "█" * int(imp * 50)
+    bar = "#" * int(imp * 50)
     print(f"  Feature {i}: {imp:.3f} {bar}")
 
-print("\n💡 Feature Importance zeigt dir, welche Eingaben das Modell am meisten nutzt.")
+print("\n* Feature Importance zeigt dir, welche Eingaben das Modell am meisten nutzt.")
+
+# ============================================================
+# UEBUNGEN
+# ============================================================
+#
+# Aufgabe 1: Erzeuge einen Datensatz mit make_regression() der 10 Features
+#   hat, aber nur 3 davon informativ sind (n_informative=3). Trainiere
+#   LinearRegression und RandomForest - welches Modell kommt besser mit
+#   den irrelevanten Features klar? Vergleiche die R2-Werte.
+#
+# Aufgabe 2: Experimentiere mit den Hyperparametern von GradientBoosting:
+#   - Aendere n_estimators (50, 100, 500)
+#   - Aendere learning_rate (0.01, 0.1, 0.5)
+#   Plotte RMSE vs. n_estimators fuer verschiedene learning_rates.
+#   Speichere als "hyperparam_vergleich.png".
+#
+# Aufgabe 3: Implementiere eine einfache Kreuzvalidierung (cross_val_score
+#   aus sklearn.model_selection) mit 5 Folds fuer alle drei Modelle.
+#   Wie unterscheiden sich die Ergebnisse vom einfachen Train/Test-Split?

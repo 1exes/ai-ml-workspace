@@ -1,7 +1,8 @@
+import sys; sys.stdout.reconfigure(encoding='utf-8')
 """
 01 - PyTorch Grundlagen
 ========================
-PyTorch ist DAS Framework für Deep Learning.
+PyTorch ist DAS Framework fuer Deep Learning.
 Hier lernst du Tensoren, Autograd und dein erstes echtes Neural Network.
 """
 
@@ -12,7 +13,7 @@ from torch.utils.data import DataLoader, TensorDataset
 import numpy as np
 
 print(f"PyTorch Version: {torch.__version__}")
-print(f"CUDA verfügbar: {torch.cuda.is_available()}")
+print(f"CUDA verfuegbar: {torch.cuda.is_available()}")
 if torch.cuda.is_available():
     print(f"GPU: {torch.cuda.get_device_name(0)}")
 
@@ -29,9 +30,9 @@ b = torch.randn(3)  # Normalverteilte Zufallswerte
 print(f"a = {a}")
 print(f"b = {b}")
 print(f"a + b = {a + b}")
-print(f"a · b = {torch.dot(a, b):.4f}")
+print(f"a . b = {torch.dot(a, b):.4f}")
 
-# GPU Transfer (wenn verfügbar)
+# GPU Transfer (wenn verfuegbar)
 a_gpu = a.to(device)
 print(f"Tensor auf {a_gpu.device}")
 
@@ -41,11 +42,11 @@ print(f"Tensor auf {a_gpu.device}")
 
 print("\n--- Autograd Demo ---")
 x = torch.tensor(3.0, requires_grad=True)
-y = x ** 2 + 2 * x + 1  # y = x² + 2x + 1
+y = x ** 2 + 2 * x + 1  # y = x^2 + 2x + 1
 
 y.backward()  # Berechne dy/dx
 print(f"x = {x.item()}")
-print(f"y = x² + 2x + 1 = {y.item()}")
+print(f"y = x^2 + 2x + 1 = {y.item()}")
 print(f"dy/dx = 2x + 2 = {x.grad.item()}")  # Bei x=3: 2*3+2 = 8
 
 # ============================================================
@@ -69,12 +70,12 @@ class SimpleNet(nn.Module):
         return self.layers(x)
 
 # ============================================================
-# 4. Training Loop - das Herzstück von Deep Learning
+# 4. Training Loop - das Herzstueck von Deep Learning
 # ============================================================
 
 print("\n--- Training eines Neural Networks ---")
 
-# Synthetische Daten (Spiralen - schwer für lineares Modell)
+# Synthetische Daten (Spiralen - schwer fuer lineares Modell)
 np.random.seed(42)
 N = 300  # Punkte pro Klasse
 K = 3    # Anzahl Klassen
@@ -88,11 +89,11 @@ for j in range(K):
     X_np[ix] = np.c_[r * np.sin(t), r * np.cos(t)]
     y_np[ix] = j
 
-# NumPy → PyTorch Tensoren
+# NumPy -> PyTorch Tensoren
 X = torch.FloatTensor(X_np).to(device)
 y = torch.LongTensor(y_np).to(device)
 
-# DataLoader für Mini-Batches
+# DataLoader fuer Mini-Batches
 dataset = TensorDataset(X, y)
 loader = DataLoader(dataset, batch_size=32, shuffle=True)
 
@@ -113,7 +114,7 @@ for epoch in range(200):
         loss = criterion(outputs, batch_y)
 
         # Backward Pass
-        optimizer.zero_grad()  # Gradienten zurücksetzen
+        optimizer.zero_grad()  # Gradienten zuruecksetzen
         loss.backward()        # Gradienten berechnen
         optimizer.step()       # Gewichte updaten
 
@@ -137,7 +138,23 @@ with torch.no_grad():
 # Model Info
 total_params = sum(p.numel() for p in model.parameters())
 print(f"Modell-Parameter: {total_params:,}")
-print(f"Modell-Größe: ~{total_params * 4 / 1024:.1f} KB (float32)")
+print(f"Modell-Groesse: ~{total_params * 4 / 1024:.1f} KB (float32)")
 
-print("\n💡 Das ist der Standard-Loop: forward → loss → backward → update")
-print("   Jedes ML-Training (auch GPT!) funktioniert so.")
+print("\n* Das ist der Standard-Loop: forward -> loss -> backward -> update")
+print("  Jedes ML-Training (auch GPT!) funktioniert so.")
+
+# ============================================================
+# UEBUNGEN
+# ============================================================
+#
+# Aufgabe 1: Aendere die Netzwerk-Architektur in SimpleNet:
+#   - Fuege einen dritten Hidden Layer hinzu (z.B. 32 Neuronen)
+#   - Ersetze ReLU durch nn.Tanh() oder nn.LeakyReLU()
+#   - Trainiere erneut und vergleiche die finale Accuracy.
+#   Welche Aktivierungsfunktion funktioniert am besten fuer Spiralen?
+#
+# Aufgabe 2: Implementiere Learning Rate Scheduling:
+#   - Verwende torch.optim.lr_scheduler.StepLR (step_size=50, gamma=0.5)
+#   - Logge die Learning Rate alle 50 Epochen mit scheduler.get_last_lr()
+#   - Vergleiche das Trainingsverhalten mit vs. ohne Scheduler.
+#   Verbessert sich die Konvergenz?

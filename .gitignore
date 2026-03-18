@@ -11,7 +11,8 @@ build/
 *.bin
 *.safetensors
 *.gguf
-models/
+downloaded_models/
 data/
 wandb/
 .vscode/
+*.png

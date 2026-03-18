@@ -1,3 +1,4 @@
+import sys; sys.stdout.reconfigure(encoding='utf-8')
 """
 02 - Daten laden, verstehen und visualisieren
 ==============================================
@@ -42,7 +43,7 @@ fig.suptitle("Daten-Exploration", fontsize=16)
 # Histogramm - Verteilung eines Features
 axes[0, 0].hist(data["einkommen"], bins=30, color="steelblue", edgecolor="white")
 axes[0, 0].set_title("Einkommensverteilung")
-axes[0, 0].set_xlabel("Einkommen (€)")
+axes[0, 0].set_xlabel("Einkommen (EUR)")
 
 # Scatter - Beziehung zwischen Features
 colors = ["red" if k == 1 else "blue" for k in data["kauft_produkt"]]
@@ -56,7 +57,7 @@ data.boxplot(column="stunden_online", by="kauft_produkt", ax=axes[1, 0])
 axes[1, 0].set_title("Online-Stunden nach Kaufverhalten")
 axes[1, 0].set_xlabel("Kauft Produkt (0=Nein, 1=Ja)")
 
-# Korrelationsmatrix - welche Features hängen zusammen?
+# Korrelationsmatrix - welche Features haengen zusammen?
 corr = data.corr()
 im = axes[1, 1].imshow(corr, cmap="coolwarm", vmin=-1, vmax=1)
 axes[1, 1].set_xticks(range(len(corr.columns)))
@@ -68,11 +69,10 @@ plt.colorbar(im, ax=axes[1, 1])
 
 plt.tight_layout()
 plt.savefig("exploration.png", dpi=150)
-plt.show()
 print("\nPlot gespeichert als 'exploration.png'")
 
 # ============================================================
-# 3. Daten vorbereiten für ML
+# 3. Daten vorbereiten fuer ML
 # ============================================================
 
 from sklearn.model_selection import train_test_split
@@ -98,4 +98,21 @@ print(f"\nVor Normalisierung - Mean: {X_train.mean(axis=0).round(1)}")
 print(f"Nach Normalisierung - Mean: {X_train_scaled.mean(axis=0).round(4)}")
 print(f"Nach Normalisierung - Std:  {X_train_scaled.std(axis=0).round(4)}")
 
-print("\n✅ Daten sind bereit für ML!")
+print("\n[OK] Daten sind bereit fuer ML!")
+
+# ============================================================
+# UEBUNGEN
+# ============================================================
+#
+# Aufgabe 1: Erstelle einen neuen Datensatz mit 500 Samples und einem
+#   zusaetzlichen Feature "bildung_jahre" (normalverteilt, mean=12, std=3).
+#   Plotte ein Histogramm davon und speichere es als "bildung_hist.png".
+#
+# Aufgabe 2: Erstelle einen Scatter-Plot, der "stunden_online" gegen
+#   "einkommen" zeigt, eingefaerbt nach "kauft_produkt". Speichere als
+#   "online_vs_einkommen.png". Gibt es einen sichtbaren Zusammenhang?
+#
+# Aufgabe 3: Teile die Daten in Train/Test (80/20) auf und wende
+#   MinMaxScaler (aus sklearn.preprocessing) statt StandardScaler an.
+#   Vergleiche die Ergebnisse: Was ist der Wertebereich nach der
+#   Skalierung? Wann wuerdest du MinMax vs Standard bevorzugen?
